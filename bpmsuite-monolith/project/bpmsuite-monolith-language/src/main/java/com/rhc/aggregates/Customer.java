@@ -5,6 +5,13 @@ import java.io.Serializable;
 import com.rhc.entities.Address;
 
 public class Customer implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6063045533064468446L;
+	/**
+	 * 
+	 */
 	private String firstName;
 	private String lastName;
 	private Address address;

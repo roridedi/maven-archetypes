@@ -3,6 +3,13 @@ package com.rhc.entities;
 import java.io.Serializable;
 
 public class Address implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8926877570621128355L;
+	/**
+	 * 
+	 */
 	private String number;
 	private String streetName;
 	private String city;
