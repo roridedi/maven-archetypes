@@ -21,25 +21,28 @@ public class CustomerServiceTest extends AbstractBusinessServicesTest{
 	}
 	
 	@Test
-	public void shouldSuccessfullyStartACustomerOnboardProcess(){
+	public void shouldSuccessfullyStartACustomerOnboardProcessCompleteHumantTaskAndCompleteProcess(){
+
+		// given
 		Customer c= new Customer();
 		c.setFirstName("Joe");
 		c.setLastName("Wohar");
+		
+		// when I start a process
+		Long processId = customerService.startCustomerOnboardProcess(c);
+		
+		// when I complete a human task
+		// TODO
 		Address address= new Address();
 		address.setCity("Lagos");
 		address.setCountry(Country.NIGERIA);
 		address.setNumber("4");
 		address.setStreetName("Lagos Street");
-		c.setAddress(address);
-		// given
-		Assert.assertNotNull(customerService);
-		System.out.println("Passing Customer " + c.toString());
-		// when 
-		Long processId = customerService.startCustomerOnboardProcess(c);
+		customerService.addAddress(processId, address);
 		
-		// then
-		Assert.assertEquals( new Long(1), processId);
-		Assert.assertEquals( 1, customerService.getNumberOfCustomerOnboardProcessesInProgress());
+		
+		// then  ensure process is complete
+		Assert.assertTrue( customerService.isProcessComplete(processId) );
 	}
 	
 	

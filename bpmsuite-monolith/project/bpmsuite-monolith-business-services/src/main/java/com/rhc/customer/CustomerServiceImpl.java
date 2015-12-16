@@ -2,9 +2,9 @@ package com.rhc.customer;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.eclipse.aether.spi.log.LoggerFactory;
 import org.jbpm.kie.services.impl.KModuleDeploymentUnit;
 import org.jbpm.services.api.DeploymentService;
 import org.jbpm.services.api.ProcessService;
@@ -12,11 +12,9 @@ import org.jbpm.services.api.RuntimeDataService;
 import org.jbpm.services.api.UserTaskService;
 import org.jbpm.services.api.model.DeploymentUnit;
 import org.jbpm.services.api.model.ProcessInstanceDesc;
-import org.kie.api.KieServices;
-
-import ch.qos.logback.classic.Logger;
 
 import com.rhc.aggregates.Customer;
+import com.rhc.entities.Address;
 import com.rhc.services.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
@@ -39,10 +37,9 @@ public class CustomerServiceImpl implements CustomerService {
 		ensureCustomerKieJarIsDeploy();
 
 		Map<String, Object> processVariables = new HashMap<String, Object>();
-//		processVariables.put("CustomerFirstName", customer.getFirstName());
-//		processVariables.put("CustomerLastName", customer.getLastName());
-//		processVariables.put("CustomerAddress", customer.getAddress().getCountry());
 		processVariables.put("Customer",customer);
+		
+		processVariables.put("Address", customer.getAddress());
 		
 
 		Long processId = processService.startProcess(DEPLOYMENT_UNIT.getIdentifier(), CUSTOMER_ONBOARD_PROCESS_ID, processVariables);
@@ -54,6 +51,26 @@ public class CustomerServiceImpl implements CustomerService {
 		// TODO switch the query to test the process status
 		Collection<ProcessInstanceDesc> processList = runtimeDataService.getProcessInstancesByProcessDefinition(CUSTOMER_ONBOARD_PROCESS_ID, null);
 		return processList.size();
+	}
+	
+	@Override
+	public boolean isProcessComplete(Long processId) {
+		ProcessInstanceDesc instanceDesc = runtimeDataService.getProcessInstanceById(processId);
+		return instanceDesc.getState().equals( new Integer(2) );
+	}
+	
+	@Override
+	public void addAddress(Long processId, Address address) {
+		List<Long> taskIds = runtimeDataService.getTasksByProcessInstanceId(processId);
+		
+		 userTaskService.claim(taskIds.get(0), "jboss");
+		 userTaskService.start(taskIds.get(0), "jboss");
+		 
+		 Map<String,Object> taskData = new HashMap<String, Object>();
+		 taskData.put("out_Address", address);
+		 
+		 userTaskService.complete(taskIds.get(0), "jboss", taskData);
+		
 	}
 
 	public void ensureCustomerKieJarIsDeploy() {
@@ -96,5 +113,9 @@ public class CustomerServiceImpl implements CustomerService {
 	public void setUserTaskService(UserTaskService userTaskService) {
 		this.userTaskService = userTaskService;
 	}
+
+
+
+
 
 }
