@@ -37,6 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
 		Map<String, Object> processVariables = new HashMap<String, Object>();
 		processVariables.put("CustomerFirstName", customer.getFirstName());
 		processVariables.put("CustomerLastName", customer.getLastName());
+		processVariables.put("CustomerAddress", customer.getAddress().getCountry());
 
 		Long processId = processService.startProcess(DEPLOYMENT_UNIT.getIdentifier(), CUSTOMER_ONBOARD_PROCESS_ID, processVariables);
 		return processId;

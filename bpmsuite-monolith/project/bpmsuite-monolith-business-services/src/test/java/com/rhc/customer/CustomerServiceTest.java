@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.rhc.aggregates.Customer;
+import com.rhc.entities.Address;
+import com.rhc.entities.Country;
 import com.rhc.services.AbstractBusinessServicesTest;
 
 public class CustomerServiceTest extends AbstractBusinessServicesTest{
@@ -13,6 +15,12 @@ public class CustomerServiceTest extends AbstractBusinessServicesTest{
 		Customer c= new Customer();
 		c.setFirstName("Joe");
 		c.setLastName("Wohar");
+		Address address= new Address();
+		address.setCity("Lagos");
+		address.setCountry(Country.NIGERIA);
+		address.setNumber("4");
+		address.setStreetName("Lagos Street");
+		c.setAddress(address);
 		// given
 		Assert.assertNotNull(customerService);
 		
