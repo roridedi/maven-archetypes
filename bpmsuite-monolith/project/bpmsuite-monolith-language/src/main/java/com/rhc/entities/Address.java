@@ -1,6 +1,8 @@
 package com.rhc.entities;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
 	private String number;
 	private String streetName;
 	private String city;

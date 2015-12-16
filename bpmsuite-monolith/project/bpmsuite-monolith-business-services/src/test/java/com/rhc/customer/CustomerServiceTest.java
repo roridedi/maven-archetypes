@@ -33,7 +33,7 @@ public class CustomerServiceTest extends AbstractBusinessServicesTest{
 		c.setAddress(address);
 		// given
 		Assert.assertNotNull(customerService);
-		
+		System.out.println("Passing Customer " + c.toString());
 		// when 
 		Long processId = customerService.startCustomerOnboardProcess(c);
 		

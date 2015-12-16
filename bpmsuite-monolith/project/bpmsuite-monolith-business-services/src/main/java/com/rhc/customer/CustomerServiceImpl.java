@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.aether.spi.log.LoggerFactory;
 import org.jbpm.kie.services.impl.KModuleDeploymentUnit;
 import org.jbpm.services.api.DeploymentService;
 import org.jbpm.services.api.ProcessService;
@@ -13,11 +14,13 @@ import org.jbpm.services.api.model.DeploymentUnit;
 import org.jbpm.services.api.model.ProcessInstanceDesc;
 import org.kie.api.KieServices;
 
+import ch.qos.logback.classic.Logger;
+
 import com.rhc.aggregates.Customer;
 import com.rhc.services.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
-
+	
 	private static final String CUSTOMER_ONBOARD_PROCESS_ID = "com.rhc.customer.CustomerOnboard";
 
 	private static final String GROUP_ID = "com.rhc";
@@ -36,9 +39,11 @@ public class CustomerServiceImpl implements CustomerService {
 		ensureCustomerKieJarIsDeploy();
 
 		Map<String, Object> processVariables = new HashMap<String, Object>();
-		processVariables.put("CustomerFirstName", customer.getFirstName());
-		processVariables.put("CustomerLastName", customer.getLastName());
-		processVariables.put("CustomerAddress", customer.getAddress().getCountry());
+//		processVariables.put("CustomerFirstName", customer.getFirstName());
+//		processVariables.put("CustomerLastName", customer.getLastName());
+//		processVariables.put("CustomerAddress", customer.getAddress().getCountry());
+		processVariables.put("Customer",customer);
+		
 
 		Long processId = processService.startProcess(DEPLOYMENT_UNIT.getIdentifier(), CUSTOMER_ONBOARD_PROCESS_ID, processVariables);
 		return processId;

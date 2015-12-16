@@ -1,8 +1,10 @@
 package com.rhc.aggregates;
 
+import java.io.Serializable;
+
 import com.rhc.entities.Address;
 
-public class Customer {
+public class Customer implements Serializable{
 	private String firstName;
 	private String lastName;
 	private Address address;
@@ -18,18 +20,19 @@ public class Customer {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
+	@Override
+	public String toString() {
+		return "Customer [firstName=" + firstName + ", lastName=" + lastName
+				+ ", address=" + address + "]";
+	}
 	public Address getAddress() {
 		return address;
 	}
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	@Override
-	public String toString() {
-		return "Customer [firstName=" + firstName + ", lastName=" + lastName
-				+ ", address=" + address + "]";
-	}
+
+
 	
 
 }
