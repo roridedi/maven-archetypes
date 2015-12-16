@@ -12,6 +12,7 @@ import org.jbpm.services.api.UserTaskService;
 import org.jbpm.services.api.model.DeploymentUnit;
 import org.jbpm.services.api.model.ProcessInstanceDesc;
 
+import com.rhc.aggregates.Customer;
 import com.rhc.services.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
@@ -29,13 +30,13 @@ public class CustomerServiceImpl implements CustomerService {
 	private UserTaskService userTaskService;
 
 	@Override
-	public Long startCustomerOnboardProcess(String firstName, String lastName) {
+	public Long startCustomerOnboardProcess(Customer customer) {
 
 		ensureCustomerKieJarIsDeploy();
 
 		Map<String, Object> processVariables = new HashMap<String, Object>();
-		processVariables.put("CustomerFirstName", firstName);
-		processVariables.put("CustomerLastName", lastName);
+		processVariables.put("CustomerFirstName", customer.getFirstName());
+		processVariables.put("CustomerLastName", customer.getLastName());
 
 		Long processId = processService.startProcess(DEPLOYMENT_UNIT.getIdentifier(), CUSTOMER_ONBOARD_PROCESS_ID, processVariables);
 		return processId;
