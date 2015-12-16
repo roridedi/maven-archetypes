@@ -1,9 +1,11 @@
 package com.rhc.aggregates;
 
+import com.rhc.entities.Address;
+
 public class Customer {
 	private String firstName;
 	private String lastName;
-	private String address;
+	private Address address;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -16,10 +18,11 @@ public class Customer {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getAddress() {
+
+	public Address getAddress() {
 		return address;
 	}
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 	@Override
